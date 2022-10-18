@@ -1,11 +1,21 @@
 import { createContext, ReactNode, useContext, useState } from "react";
-import Login from "../pages/login";
+
+type Image = {
+  height: number;
+  id: string;
+  url: string;
+  width: number;
+  favourite?: boolean;
+};
 
 type ContextType = {
   loggedIn: boolean;
-  images: string[];
+  images: Image[];
   login: (b: boolean) => void;
   logout: () => void;
+  setImages: (y: Image[]) => void;
+  username: string;
+  setUsername: (name: string) => void;
 };
 
 const defaultValue: ContextType = {
@@ -13,6 +23,9 @@ const defaultValue: ContextType = {
   images: [],
   login: (b: boolean) => {},
   logout: () => {},
+  setImages: ([]) => {},
+  username: "",
+  setUsername: (name: string) => {},
 };
 
 const Context = createContext<ContextType>(defaultValue);
@@ -32,19 +45,21 @@ export function AccountProvider(props: { children: ReactNode }) {
     setState({ ...state, loggedIn: false });
   }
 
-  function setImages(imgs: string[]) {
-    setState({
-      ...state,
-      images: imgs.map((e) => ({ url: e.url, favourite: false })),
-    });
+  function setImages(a: Image[]) {
+    setState({ ...state, images: a });
   }
 
+  function setUsername(name: string) {
+    setState({ ...state, username: name });
+  }
   return (
     <Context.Provider
       value={{
         ...state,
         login: login,
         logout: logout,
+        setImages: setImages,
+        setUsername: setUsername,
       }}
     >
       {props.children}
