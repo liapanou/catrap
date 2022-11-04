@@ -1,17 +1,16 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import internal from "stream";
 import { Header } from "../components/header";
 import { useAccount } from "../providers";
 
 const URL = `https://api.thecatapi.com/v1/images/search?limit=9`;
 
-// apothikevoume se ena variable to url
-
 export default function Home() {
   const account = useAccount();
-  // apothikevoume se ena variable tin function pou mas dinei tin dinatotita na xrisimopoioume to context
+
   const isEmpty = account.images.filter((obj) => obj.favourite).length === 0;
-  // an den eho favourite na dixnei den exeis favourites
+
   return (
     <div>
       <Header />
@@ -20,9 +19,9 @@ export default function Home() {
       <div className="grid grid-cols-5 gap-4">
         {account.images
           .filter((obj) => obj.favourite)
-          // prin kanoume tin idia diadikasia  kanoume filter tin lista etsi oste na epistrefei mono ta images pou ehoun favourite true
+
           .map((obj) => (
-            <div className="relative">
+            <div key={obj.id} className="relative">
               <img className="w-full h-full" src={obj.url} />
               <div
                 onClick={() => {
